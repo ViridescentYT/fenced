@@ -12,10 +12,17 @@ import { auth, db } from "../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/core";
 import { signOut } from "firebase/auth";
+import {
+  requestForegroundPermissionsAsync,
+  requestBackgroundPermissionsAsync,
+  getCurrentPositionAsync,
+} from "expo-location";
 
 const Initial = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+
+  const [location, setLocation] = useState("");
 
   const navigation = useNavigation();
 
@@ -28,8 +35,21 @@ const Initial = () => {
     });
   }, []);
 
+  useEffect(() => {
+    const requestPermissions = async () => {
+      await requestForegroundPermissionsAsync();
+      await requestBackgroundPermissionsAsync();
+    };
+
+    requestPermissions();
+
+    getCurrentPositionAsync().then((location) => {
+      setLocation(JSON.stringify(location));
+    });
+  }, []);
+
   return (
-    <SafeAreaView style={{ padding: 10, flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, alignItems: "center" }}>
       <View style={{ marginTop: 100, flexDirection: "row", gap: 10 }}>
         <View
           style={{
@@ -70,6 +90,10 @@ const Initial = () => {
         >
           <Text style={{ color: "white", textAlign: "center" }}>Log Out</Text>
         </TouchableOpacity>
+      </View>
+
+      <View>
+        <Text>{location}</Text>
       </View>
     </SafeAreaView>
   );
