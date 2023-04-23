@@ -15,16 +15,17 @@ import { signOut } from "firebase/auth";
 import {
   requestForegroundPermissionsAsync,
   requestBackgroundPermissionsAsync,
-  getCurrentPositionAsync,
+  startGeofencingAsync,
+  stopGeofencingAsync,
 } from "expo-location";
+import { useSelector } from "react-redux";
 
 const Initial = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
-  const [location, setLocation] = useState("");
-
   const navigation = useNavigation();
+  const { isMarked } = useSelector((state) => state.attendance.value);
 
   useEffect(() => {
     const docRef = doc(db, "users", auth.currentUser.uid);
@@ -42,11 +43,25 @@ const Initial = () => {
     };
 
     requestPermissions();
-
-    getCurrentPositionAsync().then((location) => {
-      setLocation(JSON.stringify(location));
-    });
   }, []);
+
+  const startGeofencing = () => {
+    startGeofencingAsync("geofencing_demo", [
+      {
+        latitude: 23.282134,
+        longitude: 77.456236,
+        radius: 40,
+      },
+    ]).then((data) => {
+      console.log("Geofencing Started!");
+    });
+  };
+
+  const stopGeofencing = () => {
+    stopGeofencingAsync("GEOFENCING_DEMO").then((data) => {
+      console.log("Geofencing Stopped!");
+    });
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, alignItems: "center" }}>
@@ -91,10 +106,37 @@ const Initial = () => {
           <Text style={{ color: "white", textAlign: "center" }}>Log Out</Text>
         </TouchableOpacity>
       </View>
+      <View>
+        <Text>You attendance has been</Text>
+        <Text>{isMarked ? "Marked" : "Not Marked"}</Text>
+      </View>
 
       <View>
-        <Text>{location}</Text>
+        <TouchableOpacity
+          style={{ backgroundColor: "#202020", padding: 10, marginTop: 10 }}
+          onPress={startGeofencing}
+        >
+          <Text style={{ color: "white", textAlign: "center" }}>
+            Start Geofencing
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ backgroundColor: "#202020", padding: 10, marginTop: 10 }}
+          onPress={stopGeofencing}
+        >
+          <Text style={{ color: "white", textAlign: "center" }}>
+            Stop Geofencing
+          </Text>
+        </TouchableOpacity>
       </View>
+      <TouchableOpacity
+        style={{ backgroundColor: "#202020", padding: 10, marginTop: 10 }}
+        onPress={() => {}}
+      >
+        <Text style={{ color: "white", textAlign: "center" }}>
+          Invert Attendance
+        </Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };

@@ -6,14 +6,9 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { auth, db } from "../firebaseConfig";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-} from "firebase/auth";
+import { auth } from "../firebaseConfig";
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { useNavigation } from "@react-navigation/core";
-import { doc, setDoc } from "firebase/firestore";
 
 const Login = () => {
   const [email, setEmail] = useState("");
