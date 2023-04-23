@@ -7,14 +7,12 @@ import Register from "./pages/Register";
 import * as TaskManager from "expo-task-manager";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
-import Users from "./features/Users";
 import Attendance from "./features/Attendance";
 import { GeofencingEventType } from "expo-location";
 import { invertAttendance } from "./features/Attendance";
 
 const store = configureStore({
   reducer: {
-    users: Users,
     attendance: Attendance,
   },
 });
@@ -50,5 +48,6 @@ TaskManager.defineTask("geofencing_demo", ({ data, error }) => {
 
   if (data.eventType === GeofencingEventType.Exit) {
     console.log("You have exited region!");
+    store.dispatch(invertAttendance());
   }
 });

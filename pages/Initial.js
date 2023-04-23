@@ -106,37 +106,60 @@ const Initial = () => {
           <Text style={{ color: "white", textAlign: "center" }}>Log Out</Text>
         </TouchableOpacity>
       </View>
-      <View>
-        <Text>You attendance has been</Text>
-        <Text>{isMarked ? "Marked" : "Not Marked"}</Text>
-      </View>
-
-      <View>
-        <TouchableOpacity
-          style={{ backgroundColor: "#202020", padding: 10, marginTop: 10 }}
-          onPress={startGeofencing}
+      <View style={{ width: "60%", alignItems: "center", marginTop: 40 }}>
+        <Text
+          style={{
+            color: "#202020",
+            fontWeight: "bold",
+            fontSize: 24,
+            textAlign: "center",
+          }}
         >
-          <Text style={{ color: "white", textAlign: "center" }}>
-            Start Geofencing
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ backgroundColor: "#202020", padding: 10, marginTop: 10 }}
-          onPress={stopGeofencing}
-        >
-          <Text style={{ color: "white", textAlign: "center" }}>
-            Stop Geofencing
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <TouchableOpacity
-        style={{ backgroundColor: "#202020", padding: 10, marginTop: 10 }}
-        onPress={() => {}}
-      >
-        <Text style={{ color: "white", textAlign: "center" }}>
-          Invert Attendance
+          Your attendance is being tracked.
         </Text>
-      </TouchableOpacity>
+        <View
+          style={{
+            width: "100%",
+            paddingVertical: 10,
+            backgroundColor: isMarked ? "lightgreen" : "#FF6D60",
+            alignItems: "center",
+            borderRadius: 4,
+            marginTop: 20,
+          }}
+        >
+          <Text style={{ color: "#202020", fontSize: 20, fontWeight: "600" }}>
+            {isMarked ? "Marked" : "Not Marked"}
+          </Text>
+        </View>
+        <View>
+          <TouchableOpacity
+            style={{
+              backgroundColor: "#202020",
+              padding: 10,
+              marginTop: 10,
+              borderRadius: 2,
+            }}
+            onPress={startGeofencing}
+          >
+            <Text style={{ color: "white", textAlign: "center" }}>
+              Start Geofencing
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              backgroundColor: "#202020",
+              padding: 10,
+              marginTop: 10,
+              borderRadius: 2,
+            }}
+            onPress={stopGeofencing}
+          >
+            <Text style={{ color: "white", textAlign: "center" }}>
+              Stop Geofencing
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </SafeAreaView>
   );
 };
