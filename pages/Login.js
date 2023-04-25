@@ -13,11 +13,18 @@ import { useNavigation } from "@react-navigation/core";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const navigation = useNavigation();
 
   const signIn = () => {
-    signInWithEmailAndPassword(auth, email, password).then((user) => {});
+    signInWithEmailAndPassword(auth, email, password)
+      .then((user) => {
+        setError("");
+      })
+      .catch((error) => {
+        setError(error.message);
+      });
   };
 
   useEffect(() => {
@@ -85,6 +92,9 @@ const Login = () => {
           <Text style={{ textAlign: "center" }}>Register</Text>
         </TouchableOpacity>
       </View>
+      {error ? (
+        <Text style={{ marginTop: 10, color: "red" }}>{error}</Text>
+      ) : null}
     </SafeAreaView>
   );
 };

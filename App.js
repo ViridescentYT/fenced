@@ -9,7 +9,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import Attendance from "./features/Attendance";
 import { GeofencingEventType } from "expo-location";
-import { invertAttendance } from "./features/Attendance";
+import { markAttendance } from "./features/Attendance";
 
 const store = configureStore({
   reducer: {
@@ -43,11 +43,10 @@ TaskManager.defineTask("geofencing_demo", ({ data, error }) => {
 
   if (data.eventType === GeofencingEventType.Enter) {
     console.log("You have entered region!");
-    store.dispatch(invertAttendance());
+    store.dispatch(markAttendance());
   }
 
   if (data.eventType === GeofencingEventType.Exit) {
     console.log("You have exited region!");
-    store.dispatch(invertAttendance());
   }
 });

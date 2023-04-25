@@ -8,11 +8,11 @@ const attendanceSlice = createSlice({
     },
   },
   reducers: {
-    invertAttendance: (state, action) => {
-      state.value.isMarked = !state.value.isMarked;
+    markAttendance: (state, action) => {
+      state.value.isMarked = true;
     },
   },
 });
 
 export default attendanceSlice.reducer;
-export const { invertAttendance } = attendanceSlice.actions;
+export const { markAttendance } = attendanceSlice.actions;
