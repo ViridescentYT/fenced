@@ -11,9 +11,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -31,6 +29,12 @@
       "eas": {
         "projectId": "53140936-b0bd-4128-9c93-66f157925fc8"
       }
-    }
+    },
+    "plugins": [
+      "expo-location",
+      {
+        "isAndroidBackgroundLocationEnabled": true
+      }
+    ]
   }
 }
