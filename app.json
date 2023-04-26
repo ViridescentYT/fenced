@@ -31,10 +31,12 @@
       }
     },
     "plugins": [
-      "expo-location",
-      {
-        "isAndroidBackgroundLocationEnabled": true
-      }
+      [
+        "expo-location",
+        {
+          "isAndroidBackgroundLocationEnabled": true
+        }
+      ]
     ]
   }
 }
