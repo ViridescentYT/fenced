@@ -17,6 +17,7 @@ import {
   requestBackgroundPermissionsAsync,
   startGeofencingAsync,
   stopGeofencingAsync,
+  hasStartedGeofencingAsync,
 } from "expo-location";
 import { useSelector } from "react-redux";
 
@@ -34,12 +35,15 @@ const Initial = () => {
       setName(data.name);
       setEmail(auth.currentUser.email);
     });
-  }, []);
 
-  useEffect(() => {
     const requestPermissions = async () => {
-      await requestForegroundPermissionsAsync();
-      await requestBackgroundPermissionsAsync();
+      const { status } = await requestForegroundPermissionsAsync();
+      if (status === "granted") {
+        const { status } = await requestBackgroundPermissionsAsync();
+        if (status === "granted") {
+          startGeofencing();
+        }
+      }
     };
 
     requestPermissions();
@@ -58,7 +62,7 @@ const Initial = () => {
   };
 
   const stopGeofencing = () => {
-    stopGeofencingAsync("GEOFENCING_DEMO").then((data) => {
+    stopGeofencingAsync("geofencing_demo").then((data) => {
       console.log("Geofencing Stopped!");
     });
   };
@@ -99,7 +103,14 @@ const Initial = () => {
           onPress={() => {
             signOut(auth).then((data) => {
               console.log("Logged out");
-              navigation.navigate("Login");
+              hasStartedGeofencingAsync("geofencing_demo").then(
+                (geofencingStatus) => {
+                  if (geofencingStatus) {
+                    stopGeofencing();
+                    navigation.navigate("Login");
+                  }
+                }
+              );
             });
           }}
         >
@@ -130,34 +141,6 @@ const Initial = () => {
           <Text style={{ color: "#202020", fontSize: 20, fontWeight: "600" }}>
             {isMarked ? "Marked" : "Not Marked"}
           </Text>
-        </View>
-        <View>
-          <TouchableOpacity
-            style={{
-              backgroundColor: "#202020",
-              padding: 10,
-              marginTop: 10,
-              borderRadius: 2,
-            }}
-            onPress={startGeofencing}
-          >
-            <Text style={{ color: "white", textAlign: "center" }}>
-              Start Geofencing
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              backgroundColor: "#202020",
-              padding: 10,
-              marginTop: 10,
-              borderRadius: 2,
-            }}
-            onPress={stopGeofencing}
-          >
-            <Text style={{ color: "white", textAlign: "center" }}>
-              Stop Geofencing
-            </Text>
-          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>

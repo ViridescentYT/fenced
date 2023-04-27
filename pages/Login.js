@@ -3,7 +3,7 @@ import {
   SafeAreaView,
   Text,
   View,
-  TextInput,
+  TextInput ,
   TouchableOpacity,
 } from "react-native";
 import { auth } from "../firebaseConfig";
