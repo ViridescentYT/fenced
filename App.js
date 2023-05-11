@@ -10,6 +10,8 @@ import { Provider } from "react-redux";
 import Attendance from "./features/Attendance";
 import { GeofencingEventType } from "expo-location";
 import { markAttendance } from "./features/Attendance";
+import { auth, db } from "./firebaseConfig";
+import { doc, setDoc } from "firebase/firestore";
 
 const store = configureStore({
   reducer: {
@@ -44,6 +46,26 @@ TaskManager.defineTask("geofencing_demo", ({ data, error }) => {
   if (data.eventType === GeofencingEventType.Enter) {
     console.log("You have entered region!");
     store.dispatch(markAttendance());
+    if (auth.currentUser) {
+      const date = new Date();
+      setDoc(
+        doc(db, "users", auth.currentUser.uid),
+        {
+          attendance: {
+            [date.getFullYear()]: {
+              [date.toLocaleString("default", { month: "long" })]: {
+                [date.getDate()]: {
+                  present: true,
+                },
+              },
+            },
+          },
+        },
+        { merge: true }
+      ).then((data) => {
+        console.log("Attendance Marked");
+      });
+    }
   }
 
   if (data.eventType === GeofencingEventType.Exit) {
